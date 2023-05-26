@@ -1,6 +1,10 @@
 /// <reference path="./custom-tampermonkey.d.ts" />
 
-import * as icons from './json/icons.json';
+import { icons } from './json/icons';
+import { file } from './rule/file';
+import { folder } from './rule/folder';
+import { fileEntity } from './rule/fileEntity';
+import { folderEntity } from './rule/folderEntity';
 
 console.log('%cgithub-colorful-icons%c1.0', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
 
@@ -34,11 +38,28 @@ function entry(): void {
 }
 
 function parseElement() {
-    // const elements = document.querySelectorAll(".js-details-container.Details > div[role='grid'] > div[role='row'].Box-row");
-    // if (elements.length) {
-    //     elements.forEach(el => {
-    //         el.children?.[0]?.firstElementChild?.getAttribute('aria-label');
-    //         el.children?.[1]?.firstElementChild?.getAttribute('aria-label');
-    //     });
-    // }
+    const elements = document.querySelectorAll(".js-details-container.Details > div[role='grid'] > div[role='row'].Box-row");
+    if (elements.length) {
+        elements.forEach(el => {
+            if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'Directory') {
+                const name = el.children?.[1]?.firstElementChild?.textContent;
+                if (name) {
+                    const filename = (folder as Array<folderEntity>).find(el => el.folderNames.includes(name))?.name;
+                    if (filename) {
+                        const svg = (icons as any)[filename];
+                        el.children[0].firstElementChild.innerHTML = svg;
+                    }
+                }
+            } else if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'File') {
+                const name = el.children?.[1]?.firstElementChild?.textContent;
+                if (name) {
+                    const filename = (file as Array<fileEntity>).find(el => el.fileNames?.includes(name) || el.fileNames?.includes(name.substring(name.lastIndexOf('.'))))?.name;
+                    if (filename) {
+                        const svg = (icons as any)[filename];
+                        el.children[0].firstElementChild.innerHTML = svg;
+                    }
+                }
+            }
+        });
+    }
 }

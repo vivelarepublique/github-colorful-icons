@@ -7,8 +7,7 @@
     "author": "",
     "license": "MIT",
     "scripts": {
-        "test": "ts-node index.ts",
-        "renew": "ts-node ./script/loadIcons.ts",
+        "renew": "ts-node --project config/tsconfig.json ./script/loadIcons.ts",
         "build": "npx webpack --config webpack.config.js"
     },
     "repository": {

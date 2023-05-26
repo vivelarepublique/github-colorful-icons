@@ -30,6 +30,10 @@ const config = {
     optimization: {
         minimize: false,
     },
+    performance: {
+        maxAssetSize: 1024 * 1024 * 10,
+        maxEntrypointSize: 1024 * 1024 * 10,
+    },
     plugins: [
         new BannerPlugin({
             banner: banner,

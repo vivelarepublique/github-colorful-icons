@@ -1,5 +1,5 @@
 import { readdir, readFile, writeFile } from 'fs';
-import { promisify } from 'util';
+import { promisify, inspect } from 'util';
 import { join } from 'path';
 
 const readdirPromise = promisify(readdir);
@@ -26,8 +26,9 @@ async function loadIcons(): Promise<object> {
 
 async function writeIconsObject() {
     const obj = await loadIcons();
+    const objString = inspect(obj, { depth: null, maxStringLength: Infinity });
 
-    writeFilePromise(join('json/', 'icons.json'), JSON.stringify(obj));
+    writeFilePromise(join('json/', 'icons.ts'), 'export const icons = '+objString);
 }
 
 writeIconsObject();
