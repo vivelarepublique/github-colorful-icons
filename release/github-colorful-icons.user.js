@@ -2878,7 +2878,7 @@ function parseElement() {
     if (elements.length) {
         elements.forEach(el => {
             if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'Directory') {
-                const name = el.children?.[1]?.firstElementChild?.textContent;
+                const name = el.children?.[1]?.firstElementChild?.textContent?.toLowerCase();
                 if (name) {
                     const filename = folder.find(el => el.folderNames.includes(name))?.name;
                     if (filename) {
@@ -2888,9 +2888,9 @@ function parseElement() {
                 }
             }
             else if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'File') {
-                const name = el.children?.[1]?.firstElementChild?.textContent;
+                const name = el.children?.[1]?.firstElementChild?.textContent?.toLowerCase();
                 if (name) {
-                    const filename = file.find(el => el.fileNames?.includes(name) || el.fileNames?.includes(name.substring(name.lastIndexOf('.'))))?.name;
+                    const filename = file.find(el => el.fileNames?.includes(name) || el.fileExtensions?.includes(name.substring(name.lastIndexOf('.'))) || el.fileExtensions?.includes(name.substring(name.indexOf('.') + 1)))?.name;
                     if (filename) {
                         const svg = icons[filename];
                         el.children[0].firstElementChild.innerHTML = svg;
