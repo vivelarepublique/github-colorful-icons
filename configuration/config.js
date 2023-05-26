@@ -1,4 +1,4 @@
-
+const banner = `
 // ==UserScript==
 // @name         github colorful icons
 // @namespace    http://tampermonkey.net/
@@ -10,11 +10,10 @@
 // @grant        none
 // @run-at       document-end
 // ==/UserScript==
+`;
 
-/******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-var __webpack_exports__ = {};
-/// <reference path="./custom-tampermonkey.d.ts" />
-
-/******/ })()
-;
+const scriptFilename = `github-colorful-icons.user.js`;
+module.exports = {
+    banner,
+    scriptFilename,
+};
