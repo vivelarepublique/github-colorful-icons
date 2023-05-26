@@ -28,7 +28,7 @@ async function writeIconsObject() {
     const obj = await loadIcons();
     const objString = inspect(obj, { depth: null, maxStringLength: Infinity });
 
-    writeFilePromise(join('json/', 'icons.ts'), 'export const icons = '+objString);
+    writeFilePromise(join('json/', 'icons.ts'), 'export const icons = ' + objString);
 }
 
 writeIconsObject();
