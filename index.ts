@@ -60,7 +60,10 @@ function parseElement() {
             } else if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'File') {
                 const name = el.children?.[1]?.firstElementChild?.textContent?.toLowerCase();
                 if (name) {
-                    const filename = (file as Array<fileEntity>).find(el => el.fileNames?.includes(name) || el.fileExtensions?.includes(name.substring(name.lastIndexOf('.'))) || el.fileExtensions?.includes(name.substring(name.indexOf('.') + 1)))?.name;
+                    const filenames = (file as Array<fileEntity>).find(el => el.fileNames?.includes(name))?.name;
+
+                    const filename = filenames ?? (file as Array<fileEntity>).find(el => el.fileExtensions?.includes(name.substring(name.lastIndexOf('.'))) || el.fileExtensions?.includes(name.substring(name.indexOf('.') + 1)))?.name;
+
                     if (filename) {
                         const svg = (icons as any)[filename];
                         el.children[0].firstElementChild.innerHTML = svg;
