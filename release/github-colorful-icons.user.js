@@ -7,8 +7,8 @@
 // @author       vivelarepublique
 // @match        https://github.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
-// @grant        none
-// @run-at       document-end
+// @grant        window.onurlchange
+// @run-at       document-idle
 // ==/UserScript==
 
 /******/ (() => { // webpackBootstrap
@@ -2848,23 +2848,30 @@ const folder = [
 
 console.log('%cgithub-colorful-icons%c1.0', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
 const delay = 520;
-const maxTimes = 210;
+const maxTimes = 21;
 let times = 0;
+let isDone = false;
+if (window.onurlchange === null) {
+    window.addEventListener('urlchange', _ => (isDone = false));
+}
 entry();
 function entry() {
     const id = setInterval(() => {
-        const container = document.querySelector('#repo-content-turbo-frame');
+        const container = document.body;
         times++;
         if (container) {
             clearInterval(id);
             parseElement();
             if (container) {
-                const observer = new MutationObserver(() => parseElement());
+                const observer = new MutationObserver(_ => {
+                    if (!isDone)
+                        parseElement();
+                });
                 observer.observe(container, {
-                    attributes: true,
-                    characterData: true,
+                    attributes: false,
+                    characterData: false,
                     childList: true,
-                    subtree: false,
+                    subtree: true,
                 });
             }
         }
@@ -2899,6 +2906,7 @@ function parseElement() {
             }
         });
     }
+    isDone = true;
 }
 
 /******/ })()
