@@ -1,8 +1,10 @@
+const version = require('./version');
+
 const banner = `
 // ==UserScript==
 // @name         github colorful icons
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      ${version}
 // @description  try to take over the world!
 // @author       vivelarepublique
 // @match        https://github.com/*
