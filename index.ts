@@ -11,13 +11,14 @@ console.log('%cgithub-colorful-icons%c1.0', 'padding: 3px; color: #fff; backgrou
 const delay = 520;
 const maxTimes = 21;
 let times = 0;
-let isDone = false;
+let isDone = 0;
 
 if (window.onurlchange === null) {
-    window.addEventListener('urlchange', _ => (isDone = false));
+    window.addEventListener('urlchange', _ => (isDone = 0));
 }
 
 entry();
+const debouncedPareElement = debounce(parseElement, delay);
 
 function entry(): void {
     const id = setInterval(() => {
@@ -25,19 +26,19 @@ function entry(): void {
         times++;
         if (container) {
             clearInterval(id);
-            parseElement();
 
-            if (container) {
-                const observer = new MutationObserver(_ => {
-                    if (!isDone) parseElement();
-                });
-                observer.observe(container, {
-                    attributes: false,
-                    characterData: false,
-                    childList: true,
-                    subtree: true,
-                });
-            }
+            const observer = new MutationObserver(_ => {
+                if (isDone <= 2 && document.querySelectorAll(".js-details-container.Details > div[role='grid'] > div[role='row'].Box-row div.flex-auto.min-width-0.d-none.d-md-block.col-5.mr-3 span").length !== 0) {
+                    debouncedPareElement();
+                }
+            });
+
+            observer.observe(container, {
+                attributes: false,
+                characterData: false,
+                childList: true,
+                subtree: true,
+            });
         } else if (times === maxTimes) {
             clearInterval(id);
         }
@@ -72,5 +73,13 @@ function parseElement() {
             }
         });
     }
-    isDone = true;
+    isDone++;
+}
+
+function debounce(func: Function, delay: number) {
+    let timerId: any;
+    return function () {
+        clearTimeout(timerId);
+        timerId = setTimeout(() => func(), delay);
+    };
 }

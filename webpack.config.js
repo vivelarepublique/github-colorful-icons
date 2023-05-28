@@ -1,6 +1,6 @@
 const path = require('path');
 const { BannerPlugin } = require('webpack');
-const { banner, scriptFilename } = require('./configuration/config');
+const { banner, scriptFilename } = require('./public/config');
 
 const config = {
     entry: './index.ts',
