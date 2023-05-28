@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name         github colorful icons
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  try to take over the world!
 // @author       vivelarepublique
 // @match        https://github.com/*
@@ -2900,7 +2900,7 @@ const language = [
 
 
 
-console.log('%cgithub-colorful-icons%c1.0', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
+console.log('%cgithub-colorful-icons%c1.3', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
 const delay = 520;
 const maxTimes = 21;
 let times = 0;

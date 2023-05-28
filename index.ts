@@ -9,7 +9,7 @@ import { fileEntity } from './rule/fileEntity';
 import { folderEntity } from './rule/folderEntity';
 import { languageEntity } from './rule/languageEntity';
 
-console.log('%cgithub-colorful-icons%c1.0', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
+console.log('%cgithub-colorful-icons%c1.3', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
 
 const delay = 520;
 const maxTimes = 21;
