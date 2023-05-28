@@ -3,8 +3,11 @@
 import { icons } from './json/icons';
 import { file } from './rule/file';
 import { folder } from './rule/folder';
+import { language } from './rule/language';
+
 import { fileEntity } from './rule/fileEntity';
 import { folderEntity } from './rule/folderEntity';
+import { languageEntity } from './rule/languageEntity';
 
 console.log('%cgithub-colorful-icons%c1.0', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
 
@@ -61,9 +64,14 @@ function parseElement() {
             } else if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'File') {
                 const name = el.children?.[1]?.firstElementChild?.textContent?.toLowerCase();
                 if (name) {
-                    const filenames = (file as Array<fileEntity>).find(el => el.fileNames?.includes(name))?.name;
+                    const extension = name.substring(name.indexOf('.') + 1);
+                    const lastExtension = name.substring(name.lastIndexOf('.') + 1);
 
-                    const filename = filenames ?? (file as Array<fileEntity>).find(el => el.fileExtensions?.includes(name.substring(name.lastIndexOf('.'))) || el.fileExtensions?.includes(name.substring(name.indexOf('.') + 1)))?.name;
+                    const fileFullName = (file as Array<fileEntity>).find(el => el.fileNames?.includes(name))?.name;
+                    const fileExtension = (file as Array<fileEntity>).find(el => el.fileExtensions?.includes(extension))?.name;
+                    const fileLanguageType = (language as Array<languageEntity>).find(el => el.extension?.includes(lastExtension))?.name;
+
+                    const filename = fileFullName ?? fileExtension ?? fileLanguageType;
 
                     if (filename) {
                         const svg = (icons as any)[filename];
