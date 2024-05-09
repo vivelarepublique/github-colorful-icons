@@ -9,9 +9,9 @@ import { fileEntity } from './rule/fileEntity';
 import { folderEntity } from './rule/folderEntity';
 import { languageEntity } from './rule/languageEntity';
 
-console.log('%cgithub-colorful-icons%c1.3', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
+console.log('%cgithub-colorful-icons%c1.4', 'padding: 3px; color: #fff; background: #00918a', 'padding: 3px; color: #fff; background: #002167');
 
-const delay = 520;
+const delay = 500;
 const maxTimes = 21;
 let times = 0;
 let isDone = 0;
@@ -31,7 +31,7 @@ function entry(): void {
             clearInterval(id);
 
             const observer = new MutationObserver(_ => {
-                if (isDone <= 2 && document.querySelectorAll(".js-details-container.Details > div[role='grid'] > div[role='row'].Box-row div.flex-auto.min-width-0.d-none.d-md-block.col-5.mr-3 span").length !== 0) {
+                if (isDone <= 2 && document.querySelectorAll('header.Header-old.header-logged-out.js-details-container').length !== 0) {
                     debouncedPareElement();
                 }
             });
@@ -49,38 +49,41 @@ function entry(): void {
 }
 
 function parseElement() {
-    const elements = document.querySelectorAll(".js-details-container.Details > div[role='grid'] > div[role='row'].Box-row");
-    if (elements.length) {
-        elements.forEach(el => {
-            if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'Directory') {
-                const name = el.children?.[1]?.firstElementChild?.textContent?.toLowerCase();
-                if (name) {
-                    const filename = (folder as Array<folderEntity>).find(el => el.folderNames.includes(name))?.name;
-                    if (filename) {
-                        const svg = (icons as any)[filename];
-                        el.children[0].firstElementChild.innerHTML = svg;
-                    }
-                }
-            } else if (el.children?.[0]?.firstElementChild?.getAttribute('aria-label') === 'File') {
-                const name = el.children?.[1]?.firstElementChild?.textContent?.toLowerCase();
-                if (name) {
-                    const extension = name.substring(name.indexOf('.') + 1);
-                    const lastExtension = name.substring(name.lastIndexOf('.') + 1);
+    const svgsElements = document.querySelectorAll('div.react-directory-filename-column');
+    const namesElements = document.querySelectorAll('div.react-directory-truncate');
 
-                    const fileFullName = (file as Array<fileEntity>).find(el => el.fileNames?.includes(name))?.name;
-                    const fileExtension = (file as Array<fileEntity>).find(el => el.fileExtensions?.includes(extension))?.name;
-                    const fileLanguageType = (language as Array<languageEntity>).find(el => el.extension?.includes(lastExtension))?.name;
+    const types = Array.from(svgsElements).map(el => {
+        const classes = Array.from(el.firstElementChild?.classList || []);
+        return classes.includes('icon-directory');
+    });
+    const names = Array.from(namesElements).map(el => el.firstElementChild?.textContent?.toLowerCase() || '');
 
-                    const filename = fileFullName ?? fileExtension ?? fileLanguageType;
+    console.log(types, names);
 
-                    if (filename) {
-                        const svg = (icons as any)[filename];
-                        el.children[0].firstElementChild.innerHTML = svg;
-                    }
-                }
+    svgsElements.forEach((el, index) => {
+        if (types[index]) {
+            const filename = (folder as Array<folderEntity>).find(el => el.folderNames.includes(names[index]))?.name;
+            if (filename && el.firstElementChild) {
+                const svg = (icons as any)[filename];
+                el.firstElementChild.innerHTML = svg;
             }
-        });
-    }
+        } else {
+            const extension = names[index].substring(names[index].indexOf('.') + 1);
+            const lastExtension = names[index].substring(names[index].lastIndexOf('.') + 1);
+
+            const fileFullName = (file as Array<fileEntity>).find(el => el.fileNames?.includes(names[index]))?.name;
+            const fileExtension = (file as Array<fileEntity>).find(el => el.fileExtensions?.includes(extension))?.name;
+            const fileLanguageType = (language as Array<languageEntity>).find(el => el.extension?.includes(lastExtension))?.name;
+
+            const filename = fileFullName ?? fileExtension ?? fileLanguageType;
+
+            if (filename && el.firstElementChild) {
+                const svg = (icons as any)[filename];
+                el.firstElementChild.innerHTML = svg;
+            }
+        }
+    });
+
     isDone++;
 }
 
